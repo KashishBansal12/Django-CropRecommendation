@@ -1,0 +1,53 @@
+{% extends "main.html" %}
+
+{% block content %}
+    <style>
+        .history-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f8f9fa;
+            border: 1px solid #e2e6ea;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        li strong {
+            color: #28a745;
+        }
+    </style>
+    <div class="history-container">
+        <h2>Your Recommendation History</h2>
+        {% if history %}
+            <ul>
+                {% for rec in history %}
+                    <li>
+                        On {{ rec.date_recommended|date:"F d, Y" }}, you requested a recommendation for the following conditions:
+                        <br>
+                        - N: {{ rec.nitrogen }}, P: {{ rec.phosphorus }}, K: {{ rec.potassium }}
+                        <br>
+                        - Temp: {{ rec.temperature }}°C, Humidity: {{ rec.humidity }}%
+                        <br>
+                        - pH: {{ rec.ph }}, Rainfall: {{ rec.rainfall }} mm
+                        <br>
+                        The recommended crop was: <strong>{{ rec.recommended_crop }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You don't have any past recommendations yet. Make a recommendation to see it here!</p>
+        {% endif %}
+    </div>
+{% endblock %}
