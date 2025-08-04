@@ -1,55 +1,86 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crop Recommendation App</title>
+    <!-- Updated title for the browser tab -->
+    <title>Crop Recommender | Home</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Custom styles to handle the background image and overlay */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f7fa;
-            margin: 0;
-            padding: 0;
+            /* Using a different, more reliable Unsplash image */
+            background-image: url('https://images.unsplash.com/photo-1579546929949-ef0393226a27?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjk5MjEzMjAyfA&ixlib=rb-4.0.3&q=80&w=1080');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
         }
-        .header {
-            background-color: #333;
-            color: white;
-            padding: 1rem;
-            text-align: center;
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for readability */
+            z-index: -1;
         }
-        .header nav a {
-            color: white;
-            margin: 0 1rem;
+        .nav-link {
+            transition: color 0.2s ease-in-out;
             text-decoration: none;
+        }
+        .nav-link:hover {
+            color: #d1d5db; /* A lighter gray on hover */
+        }
+        .nav-link-btn {
+            background: none;
+            border: none;
+            color: #9ca3af; /* Matches the link color */
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            transition: color 0.2s ease-in-out;
+        }
+        .nav-link-btn:hover {
+            color: #d1d5db; /* A lighter gray on hover */
         }
     </style>
 </head>
-<body>
-    <header class="header">
-        <h1>My Crop Recommender</h1>
-        <nav>
-            <a href="{% url 'home' %}">Home</a>
-            {% if user.is_authenticated %}
-                <span>Hello, {{ user.username }}!</span>
-                <a href="{% url 'recommendation_history' %}">My History</a>
-                <form action="{% url 'logout' %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" style="background:none; border:none; color:white; cursor:pointer;">Log Out</button>
-        </form>
-            {% else %}
-                <a href="{% url 'login' %}">Log In</a>
-                <a href="{% url 'signup' %}">Sign Up</a>
-            {% endif %}
-        </nav>
+<body class="min-h-screen">
+    
+    <!-- Redesigned header with dark background, padding, and centered content -->
+    <header class="bg-gray-800 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col sm:flex-row items-center justify-between">
+            <h1 class="text-3xl font-bold tracking-tight mb-2 sm:mb-0">My Crop Recommender</h1>
+            <nav class="flex items-center space-x-6 mt-2 sm:mt-0">
+                <a href="{% url 'home' %}" class="nav-link text-gray-300 hover:text-white transition-colors duration-200">Home</a>
+                {% if user.is_authenticated %}
+                    <span class="text-gray-400">Hello, {{ user.username }}!</span>
+                    <a href="{% url 'recommendation_history' %}" class="nav-link text-gray-300 hover:text-white transition-colors duration-200">My History</a>
+                    <!-- Logout is a form with a button for security -->
+                    <form action="{% url 'logout' %}" method="post" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-gray-300 hover:text-white transition-colors duration-200">Log Out</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-link text-gray-300 hover:text-white transition-colors duration-200">Log In</a>
+                    <a href="{% url 'signup' %}" class="nav-link text-gray-300 hover:text-white transition-colors duration-200">Sign Up</a>
+                {% endif %}
+            </nav>
+        </div>
     </header>
 
-    <main>
+    <main class="container mx-auto mt-8 px-4">
         {% block content %}
+        <!-- Child templates will insert their unique content here -->
         {% endblock %}
     </main>
 
-    <footer>
-        <p style="text-align: center; margin-top: 2rem;">&copy; 2025 Crop Recommendation App</p>
+    <footer class="mt-8 py-4 text-center text-gray-200">
+        <p>&copy; 2025 Crop Recommendation App. All rights reserved.</p>
     </footer>
 </body>
 </html>
